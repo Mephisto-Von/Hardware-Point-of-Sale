@@ -141,17 +141,14 @@ user = storage.get('user');
 
 
 if (auth == undefined) {
-    $.get(api + 'users/check/', function (data) { });
-    $("#loading").show();
+    $.get(api + 'users/check/');
     authenticate();
 
 } else {
 
     $('#loading').show();
 
-    setTimeout(function () {
-        $('#loading').hide();
-    }, 2000);
+    $('#loading').hide();
 
     platform = storage.get('settings');
 
@@ -2488,7 +2485,11 @@ $('body').on("submit", "#account", function (e) {
                 if (data._id) {
                     storage.set('auth', { auth: true });
                     storage.set('user', data);
-                    ipcRenderer.send('app-reload', '');
+                    if (isElectron) {
+                        ipcRenderer.send('app-reload', '');
+                    } else {
+                        location.reload();
+                    }
                 }
                 else {
                     Swal.fire(
@@ -2524,10 +2525,34 @@ $('#quit').click(function () {
 });
 
 $('#open-whatsapp').click(function () {
-    if (isElectron) {
-        ipcRenderer.send('open-whatsapp-window');
+    toggleWhatsAppSidebar();
+});
+
+function toggleWhatsAppSidebar() {
+    var sidebar = document.getElementById('whatsapp-sidebar');
+    var overlay = document.getElementById('whatsapp-sidebar-overlay');
+    var iframe = document.getElementById('whatsapp-iframe');
+    var isOpen = sidebar.classList.contains('open');
+
+    if (isOpen) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
     } else {
-        window.open('https://web.whatsapp.com', '_blank');
+        if (!iframe.src) {
+            iframe.src = 'https://web.whatsapp.com';
+        }
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+    }
+}
+
+// Close sidebar on Escape key
+$(document).on('keydown', function (e) {
+    if (e.key === 'Escape') {
+        var sidebar = document.getElementById('whatsapp-sidebar');
+        if (sidebar && sidebar.classList.contains('open')) {
+            toggleWhatsAppSidebar();
+        }
     }
 });
 
