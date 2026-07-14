@@ -58,6 +58,7 @@
     "express-fileupload": "^1.1.6",
     "html2canvas": "^1.0.0-rc.5",
     "http": "0.0.0",
+    "http-proxy": "^1.18.1",
     "https": "^1.0.0",
     "is-port-reachable": "^2.0.1",
     "jquery": "^3.4.1",

@@ -2524,30 +2524,9 @@ $('#quit').click(function () {
     });
 });
 
-// Set up WhatsApp sidebar mode
-(function () {
-    var sidebar = document.getElementById('whatsapp-sidebar');
-    if (isElectron) {
-        sidebar.classList.add('electron');
-        // Load webview on first open
-        var webview = document.getElementById('whatsapp-webview');
-        var loaded = false;
-        var loadOnce = function () {
-            if (!loaded) {
-                loaded = true;
-                webview.src = 'https://web.whatsapp.com';
-            }
-        };
-        $('#open-whatsapp').click(function () {
-            toggleWhatsAppSidebar();
-            setTimeout(loadOnce, 10);
-        });
-    } else {
-        $('#open-whatsapp').click(function () {
-            toggleWhatsAppSidebar();
-        });
-    }
-})();
+$('#open-whatsapp').click(function () {
+    toggleWhatsAppSidebar();
+});
 
 function toggleWhatsAppSidebar() {
     var sidebar = document.getElementById('whatsapp-sidebar');
@@ -2568,13 +2547,11 @@ function openWhatsAppNewTab() {
 }
 
 function reloadWhatsApp() {
-    if (isElectron) {
-        var webview = document.getElementById('whatsapp-webview');
-        var src = webview.src;
-        webview.src = '';
-        setTimeout(function () { webview.src = src; }, 200);
-    } else {
-        openWhatsAppNewTab();
+    var el = document.getElementById('whatsapp-webview') || document.getElementById('whatsapp-iframe');
+    if (el) {
+        var src = el.src;
+        el.src = '';
+        setTimeout(function () { el.src = src; }, 200);
     }
 }
 

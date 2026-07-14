@@ -2,7 +2,8 @@ let express = require("express"),
   http = require("http"),
   app = require("express")(),
   server = http.createServer(app),
-  bodyParser = require("body-parser");
+  bodyParser = require("body-parser"),
+  httpProxy = require("http-proxy");
 
 const PORT = process.env.PORT || 8001;
 
@@ -48,5 +49,38 @@ app.use("/api/categories", require("./api/categories"));
 app.use("/api/settings", require("./api/settings"));
 app.use("/api/users", require("./api/users"));
 app.use("/api", require("./api/transactions"));
+
+// WhatsApp Web proxy — strips X-Frame-Options so it loads in an iframe
+var whatsappProxy = httpProxy.createProxyServer({
+  target: "https://web.whatsapp.com",
+  changeOrigin: true,
+  secure: true,
+});
+
+whatsappProxy.on("proxyRes", function (proxyRes, req, res) {
+  delete proxyRes.headers["x-frame-options"];
+  delete proxyRes.headers["X-Frame-Options"];
+  delete proxyRes.headers["content-security-policy"];
+  delete proxyRes.headers["Content-Security-Policy"];
+});
+
+whatsappProxy.on("error", function (err, req, res) {
+  if (res && !res.headersSent) {
+    res.statusCode = 502;
+    res.end("Proxy error");
+  }
+});
+
+app.use("/whatsapp-proxy", function (req, res, next) {
+  req.url = req.originalUrl.replace(/^\/whatsapp-proxy/, "") || "/";
+  whatsappProxy.web(req, res);
+});
+
+server.on("upgrade", function (req, socket, head) {
+  if (req.url && req.url.startsWith("/whatsapp-proxy")) {
+    req.url = req.url.replace(/^\/whatsapp-proxy/, "");
+    whatsappProxy.ws(req, socket, head);
+  }
+});
 
 server.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));

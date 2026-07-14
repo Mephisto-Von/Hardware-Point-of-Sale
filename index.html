@@ -989,14 +989,15 @@
         </div>
       </div>
       <div class="whatsapp-sidebar-body" id="whatsapp-sidebar-body">
-        <!-- Electron: embedded webview -->
-        <webview id="whatsapp-webview" class="whatsapp-webview" src="https://web.whatsapp.com" allowpopups disablewebsecurity></webview>
-        <!-- Browser fallback -->
-        <div id="whatsapp-browser-fallback" class="whatsapp-placeholder">
+        <!-- Embedded WhatsApp via local proxy (bypasses X-Frame-Options) -->
+        <webview id="whatsapp-webview" class="whatsapp-webview" src="/whatsapp-proxy/" allowpopups disablewebsecurity></webview>
+        <iframe id="whatsapp-iframe" class="whatsapp-iframe" src="/whatsapp-proxy/" allow="camera;microphone"></iframe>
+        <!-- Fallback for when neither works -->
+        <div id="whatsapp-browser-fallback" class="whatsapp-placeholder" style="display:none;">
           <div class="whatsapp-placeholder-icon"><i class="fa fa-whatsapp"></i></div>
           <h4>WhatsApp Web</h4>
           <p class="whatsapp-placeholder-text">
-            Open WhatsApp Web in a separate window alongside the POS.
+            Open WhatsApp Web in a separate window.
           </p>
           <button class="btn btn-success btn-lg" onclick="openWhatsAppNewTab()" style="background-color:#25D366;border-color:#25D366;">
             <i class="fa fa-external-link"></i> Open WhatsApp
@@ -1118,15 +1119,17 @@
     font-size: 16px;
     border-radius: 6px;
   }
-  .whatsapp-webview {
+  .whatsapp-webview,
+  .whatsapp-iframe {
     flex: 1;
     width: 100%;
     height: 100%;
     border: none;
-    display: none;
   }
+  .whatsapp-webview { display: none; }
+  .whatsapp-iframe { display: flex; }
   .whatsapp-sidebar.electron .whatsapp-webview { display: flex; }
-  .whatsapp-sidebar.electron .whatsapp-placeholder { display: none; }
+  .whatsapp-sidebar.electron .whatsapp-iframe { display: none; }
   @media (max-width: 900px) {
     .whatsapp-sidebar.open { width: var(--sidebar-width, 320px); }
   }
