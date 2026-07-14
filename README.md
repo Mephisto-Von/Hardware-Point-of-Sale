@@ -1,6 +1,19 @@
 # Hardware Point of Sale
 
+[![Release](https://img.shields.io/github/v/release/Mephisto-Von/Hardware-Point-of-Sale)](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Mephisto-Von/Hardware-Point-of-Sale/total)](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest)
+
 Desktop Point of Sale app for hardware stores built with Electron.
+
+## Download
+
+| Installer | Description | Link |
+|-----------|-------------|------|
+| <img src="https://img.icons8.com/color/24/000000/windows-10.png" width="16"/> `Setup.exe` | NSIS installer (recommended) | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.Setup.0.1.0.exe) |
+| <img src="https://img.icons8.com/color/24/000000/windows-10.png" width="16"/> `Portable.exe` | Portable — no installation needed | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.0.1.0.exe) |
+| 🌐 Web App | Run in any browser (no install) | `npm install && node server.js` |
+
+> Default login: **admin** / **admin**
 
 ## Features
 
@@ -14,7 +27,7 @@ Desktop Point of Sale app for hardware stores built with Electron.
 - Customer database
 - Transaction history with filters (date, till, cashier, status)
 
-## Quick Start
+## Quick Start (Web)
 
 ```bash
 npm install
@@ -22,8 +35,6 @@ node server.js
 ```
 
 Open **http://localhost:8001** in a browser.
-
-Default login: **admin** / **admin**
 
 ## Desktop App (Electron)
 
@@ -33,13 +44,10 @@ Requires a display environment (Windows, macOS, or Linux with X11/Wayland):
 npm run electron
 ```
 
-## Build Installers
-
-### Windows (NSIS .exe)
-
-Build on any platform:
+## Build from Source
 
 ```bash
+npm install
 npm run electron-build -- --win
 ```
 
@@ -49,14 +57,6 @@ Output in `release/`:
 |------|-------------|
 | `HardwarePOS Setup 0.1.0.exe` | NSIS installer |
 | `HardwarePOS 0.1.0.exe` | Portable (single-file) |
-
-### Windows (MSI)
-
-Requires Windows or Wine with WiX toolchain support:
-
-```bash
-npm run electron-build -- --win --config.win.target=msi
-```
 
 ## Project Structure
 
