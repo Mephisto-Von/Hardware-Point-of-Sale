@@ -2530,23 +2530,14 @@ $('#open-whatsapp').click(function () {
 
 function toggleWhatsAppSidebar() {
     var sidebar = document.getElementById('whatsapp-sidebar');
-    var overlay = document.getElementById('whatsapp-sidebar-overlay');
-    var iframe = document.getElementById('whatsapp-iframe');
     var isOpen = sidebar.classList.contains('open');
-
     if (isOpen) {
         sidebar.classList.remove('open');
-        overlay.classList.remove('show');
     } else {
-        if (!iframe.src) {
-            iframe.src = 'https://web.whatsapp.com';
-        }
         sidebar.classList.add('open');
-        overlay.classList.add('show');
     }
 }
 
-// Close sidebar on Escape key
 $(document).on('keydown', function (e) {
     if (e.key === 'Escape') {
         var sidebar = document.getElementById('whatsapp-sidebar');

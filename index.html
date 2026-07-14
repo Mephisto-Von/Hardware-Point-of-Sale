@@ -20,76 +20,9 @@
 
   <div id="loading"></div>
 
-  <!-- WhatsApp Sidebar Toggle -->
-  <div id="whatsapp-sidebar-overlay" class="sidebar-overlay" onclick="toggleWhatsAppSidebar()"></div>
-  <div id="whatsapp-sidebar" class="whatsapp-sidebar">
-    <div class="whatsapp-sidebar-header">
-      <span><i class="fa fa-whatsapp" style="color:#25D366;"></i> WhatsApp Web</span>
-      <button class="btn btn-xs btn-default" onclick="toggleWhatsAppSidebar()">&times;</button>
-    </div>
-    <iframe id="whatsapp-iframe" src="" frameborder="0" allow="camera;microphone"></iframe>
-  </div>
-
-  <style>
-    .whatsapp-sidebar {
-      position: fixed;
-      top: 0;
-      right: -420px;
-      width: 420px;
-      height: 100%;
-      background: #fff;
-      box-shadow: -4px 0 20px rgba(0,0,0,0.15);
-      z-index: 9999;
-      transition: right 0.3s ease;
-      display: flex;
-      flex-direction: column;
-    }
-    .whatsapp-sidebar.open {
-      right: 0;
-    }
-    .whatsapp-sidebar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background: #075e54;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-    .whatsapp-sidebar-header button {
-      color: #fff;
-      font-size: 20px;
-      background: transparent;
-      border: none;
-      opacity: 0.8;
-      cursor: pointer;
-    }
-    .whatsapp-sidebar-header button:hover {
-      opacity: 1;
-    }
-    .whatsapp-sidebar iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
-    }
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.3);
-      z-index: 9998;
-    }
-    .sidebar-overlay.show {
-      display: block;
-    }
-    @media (max-width: 768px) {
-      .whatsapp-sidebar { width: 100%; right: -100%; }
-    }
-  </style>
-
-  <div class="container">
+  <div class="app-layout">
+    <div class="app-content">
+      <div class="container">
         <div id="low-stock-alert-banner" class="alert alert-warning m-t-15" style="display:none; margin-bottom: 10px; font-size: 13px;">
              <i class="fa fa-warning"></i> <strong>Low Stock Alert:</strong> The following items are running low (qty < 5): <span id="low-stock-items-list"></span>
         </div>
@@ -1041,7 +974,82 @@
 
   </div>
 
+    </div>
+
+    <!-- WhatsApp Sidebar -->
+    <div id="whatsapp-sidebar" class="whatsapp-sidebar">
+      <div class="whatsapp-sidebar-header">
+        <span><i class="fa fa-whatsapp"></i> WhatsApp</span>
+        <button class="btn btn-xs btn-default" onclick="toggleWhatsAppSidebar()">&times;</button>
+      </div>
+      <iframe id="whatsapp-iframe" src="https://web.whatsapp.com" allow="camera;microphone"></iframe>
+    </div>
+
+  </div>
+
 </div>
+
+<style>
+  .app-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .app-content {
+    flex: 1;
+    overflow-y: auto;
+    min-width: 0;
+  }
+  .whatsapp-sidebar {
+    width: 0;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #ddd;
+    transition: width 0.3s ease;
+    flex-shrink: 0;
+  }
+  .whatsapp-sidebar.open {
+    width: 420px;
+  }
+  .whatsapp-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #075e54;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .whatsapp-sidebar-header button {
+    color: #fff;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    opacity: 0.8;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .whatsapp-sidebar-header button:hover {
+    opacity: 1;
+  }
+  .whatsapp-sidebar iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    min-height: 400px;
+  }
+  @media (max-width: 900px) {
+    .whatsapp-sidebar.open { width: 320px; }
+  }
+  @media (max-width: 700px) {
+    .whatsapp-sidebar.open { width: 100%; }
+    .app-layout { flex-direction: column; }
+  }
+</style>
 
 <script>
 if (typeof require !== 'undefined') {
