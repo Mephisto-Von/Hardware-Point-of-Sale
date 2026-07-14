@@ -2542,11 +2542,12 @@ function toggleWhatsAppSidebar() {
     setTimeout(function () { sidebar.classList.remove('animating'); }, 350);
 }
 
-function refreshWhatsApp() {
-    var iframe = document.getElementById('whatsapp-iframe');
-    var src = iframe.src;
-    iframe.src = '';
-    setTimeout(function () { iframe.src = src; }, 100);
+function openWhatsAppNewTab() {
+    if (isElectron) {
+        ipcRenderer.send('open-whatsapp-window');
+    } else {
+        window.open('https://web.whatsapp.com', '_blank');
+    }
 }
 
 // Sidebar resize
