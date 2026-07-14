@@ -2531,12 +2531,63 @@ $('#open-whatsapp').click(function () {
 function toggleWhatsAppSidebar() {
     var sidebar = document.getElementById('whatsapp-sidebar');
     var isOpen = sidebar.classList.contains('open');
+    sidebar.classList.add('animating');
     if (isOpen) {
         sidebar.classList.remove('open');
     } else {
+        var saved = localStorage.getItem('sidebarWidth');
+        if (saved) sidebar.style.setProperty('--sidebar-width', saved + 'px');
         sidebar.classList.add('open');
     }
+    setTimeout(function () { sidebar.classList.remove('animating'); }, 350);
 }
+
+function refreshWhatsApp() {
+    var iframe = document.getElementById('whatsapp-iframe');
+    var src = iframe.src;
+    iframe.src = '';
+    setTimeout(function () { iframe.src = src; }, 100);
+}
+
+// Sidebar resize
+(function () {
+    var sidebar = document.getElementById('whatsapp-sidebar');
+    var handle = document.getElementById('sidebar-resize-handle');
+    var isResizing = false;
+
+    function startResize(e) {
+        isResizing = true;
+        sidebar.classList.remove('animating');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+    }
+
+    function doResize(e) {
+        if (!isResizing) return;
+        var clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        if (!clientX) return;
+        var rect = document.querySelector('.app-layout').getBoundingClientRect();
+        var width = rect.right - clientX;
+        if (width < 280) width = 280;
+        if (width > window.innerWidth * 0.6) width = window.innerWidth * 0.6;
+        sidebar.style.setProperty('--sidebar-width', width + 'px');
+        localStorage.setItem('sidebarWidth', width);
+    }
+
+    function stopResize() {
+        if (!isResizing) return;
+        isResizing = false;
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+    }
+
+    handle.addEventListener('mousedown', startResize);
+    handle.addEventListener('touchstart', startResize, { passive: true });
+    document.addEventListener('mousemove', doResize);
+    document.addEventListener('touchmove', doResize, { passive: true });
+    document.addEventListener('mouseup', stopResize);
+    document.addEventListener('touchend', stopResize);
+})();
 
 $(document).on('keydown', function (e) {
     if (e.key === 'Escape') {

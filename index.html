@@ -978,9 +978,15 @@
 
     <!-- WhatsApp Sidebar -->
     <div id="whatsapp-sidebar" class="whatsapp-sidebar">
+      <div class="sidebar-resize-handle" id="sidebar-resize-handle"></div>
       <div class="whatsapp-sidebar-header">
-        <span><i class="fa fa-whatsapp"></i> WhatsApp</span>
-        <button class="btn btn-xs btn-default" onclick="toggleWhatsAppSidebar()">&times;</button>
+        <span><i class="fa fa-whatsapp" style="color:#25D366;"></i> WhatsApp</span>
+        <div class="sidebar-header-actions">
+          <button class="sidebar-header-btn" onclick="refreshWhatsApp()" title="Refresh WhatsApp">
+            <i class="fa fa-refresh"></i>
+          </button>
+          <button class="sidebar-header-btn" onclick="toggleWhatsAppSidebar()" title="Close sidebar">&times;</button>
+        </div>
       </div>
       <iframe id="whatsapp-iframe" src="https://web.whatsapp.com" allow="camera;microphone"></iframe>
     </div>
@@ -1007,11 +1013,32 @@
     display: flex;
     flex-direction: column;
     border-left: 1px solid #ddd;
-    transition: width 0.3s ease;
     flex-shrink: 0;
+    position: relative;
   }
   .whatsapp-sidebar.open {
-    width: 420px;
+    width: var(--sidebar-width, 420px);
+    overflow: visible;
+  }
+  .whatsapp-sidebar.animating {
+    transition: width 0.3s ease;
+  }
+  .sidebar-resize-handle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: col-resize;
+    z-index: 10;
+    background: transparent;
+  }
+  .sidebar-resize-handle:hover,
+  .sidebar-resize-handle:active {
+    background: rgba(7, 94, 84, 0.15);
+  }
+  @media (pointer: coarse) {
+    .sidebar-resize-handle { width: 10px; }
   }
   .whatsapp-sidebar-header {
     display: flex;
@@ -1024,16 +1051,23 @@
     font-weight: 600;
     flex-shrink: 0;
   }
-  .whatsapp-sidebar-header button {
+  .sidebar-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sidebar-header-btn {
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
     background: transparent;
     border: none;
     opacity: 0.8;
     cursor: pointer;
-    padding: 0 4px;
+    padding: 0 6px;
+    line-height: 1;
+    transition: opacity 0.15s;
   }
-  .whatsapp-sidebar-header button:hover {
+  .sidebar-header-btn:hover {
     opacity: 1;
   }
   .whatsapp-sidebar iframe {
@@ -1043,11 +1077,12 @@
     min-height: 400px;
   }
   @media (max-width: 900px) {
-    .whatsapp-sidebar.open { width: 320px; }
+    .whatsapp-sidebar.open { width: var(--sidebar-width, 320px); }
   }
   @media (max-width: 700px) {
     .whatsapp-sidebar.open { width: 100%; }
     .app-layout { flex-direction: column; }
+    .sidebar-resize-handle { display: none; }
   }
 </style>
 
