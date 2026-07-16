@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="dark">
   <head>
     <meta charset="UTF-8">
     <title>MetroPOS - Point of Sale System</title>
@@ -13,6 +13,7 @@
     <link href="assets/plugins/dataTables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/dataTables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />    
     <link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/theme.css" rel="stylesheet" type="text/css" />
     </head>
   <body>
     
@@ -59,13 +60,18 @@
                         
                     </div>
 
-                    <img class="m-t-5" style="margin-left: 2%; vertical-align: middle;" height="40px" src="assets/images/logo.svg" alt="MetroPOS">
+                    <img class="header-logo" src="assets/images/Title mian.png" alt="MetroPOS">
 
                     <div class="button-list pull-right m-t-15 m-l-10">  
 
                             <button id="settings" data-toggle="modal" data-target="#settingsModal"  type="button"  class="btn btn-default waves-effect waves-light p_five">
                                 <i class="glyphicon glyphicon-cog"></i>
                           </button>
+
+                            <button id="themeToggle" type="button" class="theme-toggle" onclick="toggleTheme()">
+                                <span class="icon-moon" id="themeIcon">&#9789;</span>
+                                <span id="themeLabel">Dark</span>
+                            </button>
 
                             <button id="open-whatsapp" type="button" class="btn btn-success waves-effect waves-light" style="background-color: #25D366; border-color: #25D366; color: white;">
                                 <i class="fa fa-whatsapp"></i> WhatsApp
@@ -1204,6 +1210,37 @@ if (typeof require !== 'undefined') {
     //   });
 
      </script>
+
+    <script>
+    // Theme Toggle Functionality
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('metroPOS-theme', newTheme);
+        updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+        const icon = document.getElementById('themeIcon');
+        const label = document.getElementById('themeLabel');
+        if (theme === 'dark') {
+            icon.innerHTML = '&#9789;'; // Moon
+            label.textContent = 'Dark';
+        } else {
+            icon.innerHTML = '&#9788;'; // Sun
+            label.textContent = 'Light';
+        }
+    }
+
+    // Initialize theme from localStorage
+    (function() {
+        const savedTheme = localStorage.getItem('metroPOS-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+    })();
+    </script>
 
   </body>
 </html>

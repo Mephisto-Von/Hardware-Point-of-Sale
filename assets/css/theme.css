@@ -1,0 +1,315 @@
+/* MetroPOS Theme System - Light/Dark Mode */
+
+:root {
+  /* Dark Theme (default) */
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-card: #1f2940;
+  --bg-header: #0f0f1a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --accent-blue: #00a8ff;
+  --accent-silver: #c0c0c0;
+  --border-color: #2a3a5c;
+  --btn-default-bg: #2a3a5c;
+  --btn-default-text: #e0e0e0;
+  --btn-default-border: #3a4a6c;
+  --input-bg: #1f2940;
+  --input-text: #e0e0e0;
+  --input-border: #2a3a5c;
+  --modal-bg: #1f2940;
+  --modal-header-bg: #16213e;
+  --table-bg: #1f2940;
+  --table-border: #2a3a5c;
+  --table-hover: #2a3a5c;
+  --scrollbar-track: #1a1a2e;
+  --scrollbar-thumb: #2a3a5c;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] {
+  /* Light Theme */
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --accent-blue: #0066cc;
+  --accent-silver: #888888;
+  --border-color: #e0e0e0;
+  --btn-default-bg: #ffffff;
+  --btn-default-text: #333333;
+  --btn-default-border: #cccccc;
+  --input-bg: #ffffff;
+  --input-text: #333333;
+  --input-border: #cccccc;
+  --modal-bg: #ffffff;
+  --modal-header-bg: #f5f7fa;
+  --table-bg: #ffffff;
+  --table-border: #e0e0e0;
+  --table-hover: #f0f0f0;
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: #cccccc;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: var(--btn-default-bg);
+  border: 1px solid var(--btn-default-border);
+  color: var(--btn-default-text);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-blue);
+  color: white;
+  border-color: var(--accent-blue);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  font-size: 16px;
+}
+
+/* Apply Theme to Body */
+body {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Header Styling */
+.topbar {
+  background: var(--bg-header) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow);
+}
+
+.topbar .btn {
+  background: var(--btn-default-bg) !important;
+  color: var(--btn-default-text) !important;
+  border-color: var(--btn-default-border) !important;
+}
+
+.topbar .btn:hover {
+  background: var(--accent-blue) !important;
+  color: white !important;
+  border-color: var(--accent-blue) !important;
+}
+
+.topbar .btn-warning {
+  background: #ff9800 !important;
+  color: white !important;
+  border-color: #ff9800 !important;
+}
+
+.topbar .btn-success {
+  background: #4caf50 !important;
+  color: white !important;
+  border-color: #4caf50 !important;
+}
+
+.topbar .btn-info {
+  background: var(--accent-blue) !important;
+  color: white !important;
+  border-color: var(--accent-blue) !important;
+}
+
+.topbar .btn-dark {
+  background: #333333 !important;
+  color: white !important;
+  border-color: #333333 !important;
+}
+
+.topbar .btn-light {
+  background: var(--accent-silver) !important;
+  color: #333333 !important;
+  border-color: var(--accent-silver) !important;
+}
+
+/* Logo in Header */
+.header-logo {
+  height: 45px;
+  vertical-align: middle;
+  margin: 0 15px;
+  filter: drop-shadow(0 2px 4px rgba(0, 168, 255, 0.3));
+}
+
+/* Card Boxes */
+.card-box {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+/* Forms */
+.form-control {
+  background: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border-color: var(--input-border) !important;
+}
+
+.form-control:focus {
+  border-color: var(--accent-blue) !important;
+  box-shadow: 0 0 0 2px rgba(0, 168, 255, 0.2) !important;
+}
+
+/* Tables */
+.table {
+  background: var(--table-bg) !important;
+}
+
+.table > thead > tr > th {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+.table > tbody > tr > td {
+  color: var(--text-primary) !important;
+  border-top-color: var(--border-color) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+.table-hover > tbody > tr:hover {
+  background: var(--table-hover) !important;
+}
+
+/* Modals */
+.modal-content {
+  background: var(--modal-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px;
+}
+
+.modal-header {
+  background: var(--modal-header-bg) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+.modal-title {
+  color: var(--text-primary) !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Links */
+a {
+  color: var(--accent-blue) !important;
+}
+
+a:hover {
+  color: #0088dd !important;
+}
+
+/* Alert Banners */
+.alert-warning {
+  background: rgba(255, 152, 0, 0.15) !important;
+  border-color: #ff9800 !important;
+  color: #ff9800 !important;
+}
+
+/* Input Groups */
+.input-group-addon {
+  background: var(--btn-default-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* List Groups */
+.list-group-item {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.list-group-item.active {
+  background: var(--accent-blue) !important;
+  border-color: var(--accent-blue) !important;
+  color: white !important;
+}
+
+/* Select */
+select.form-control {
+  background: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* Placeholder */
+::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 1;
+}
+
+/* HR */
+hr {
+  border-top-color: var(--border-color) !important;
+}
+
+/* Strong/Bold */
+strong, b {
+  color: var(--text-primary) !important;
+}
+
+/* Loading Spinner */
+.loading {
+  filter: brightness(0.8);
+}
+
+/* POS Specific Styles */
+#pos_view .card-box {
+  background: var(--bg-card) !important;
+}
+
+#cartTable {
+  background: var(--bg-card) !important;
+}
+
+#cartTable th {
+  background: var(--bg-secondary) !important;
+}
+
+/* Payment Modal */
+#paymentModel .modal-content {
+  background: var(--modal-bg) !important;
+}
+
+/* Transitions */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
