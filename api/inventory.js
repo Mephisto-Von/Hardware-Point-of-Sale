@@ -7,6 +7,7 @@ const fileUpload = require('express-fileupload');
 const multer = require("multer");
 const fs = require('fs');
 const path = require("path");
+const { verifyToken } = require("./auth");
 
 const DATA_DIR = process.env.APPDATA
   ? path.join(process.env.APPDATA, "HardwarePOS")
@@ -32,6 +33,7 @@ const storage = multer.diskStorage({
 let upload = multer({storage: storage});
 
 app.use(bodyParser.json());
+app.use(verifyToken);
 
 
 module.exports = app;

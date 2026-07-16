@@ -65,6 +65,23 @@ if (isElectron) {
     macaddress = { one: function(cb) { cb(null, "web-client-mac"); } };
 }
 
+function sanitize(str) {
+  if (typeof str !== 'string') return str;
+  return DOMPurify ? DOMPurify.sanitize(str) : str;
+}
+
+function sanitizeHtml(str) {
+  if (typeof str !== 'string') return '';
+  return ('' + str).replace(/[&<>"']/g, function (m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    if (m === '"') return '&quot;';
+    if (m === "'") return '&#39;';
+    return m;
+  });
+}
+
 let dotInterval = setInterval(function () { $(".dot").text('.') }, 3000);
 let categories = [];
 let holdOrderList = [];
@@ -138,9 +155,27 @@ $.fn.serializeObject = function () {
 
 auth = storage.get('auth');
 user = storage.get('user');
+let token = storage.get('token');
 
+// Attach JWT token to all AJAX requests
+$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+  if (token) {
+    jqXHR.setRequestHeader('Authorization', 'Bearer ' + token);
+  }
+});
+$(document).ajaxError(function (event, jqXHR) {
+  if (jqXHR.status === 401) {
+    storage.delete('auth');
+    storage.delete('user');
+    storage.delete('token');
+    location.reload();
+  }
+});
 
-if (auth == undefined) {
+if (auth == undefined || !token) {
+    storage.delete('auth');
+    storage.delete('user');
+    storage.delete('token');
     $.get(api + 'users/check/');
     authenticate();
 
@@ -250,13 +285,16 @@ if (auth == undefined) {
 
                     let isLowStock = item.stock == 1 && item.quantity < 5;
                     let stockStyle = isLowStock ? 'color: #d9534f; font-weight: bold;' : '';
-                    let item_info = `<div class="col-lg-2 box ${item.category}"
+                    let catClass = sanitizeHtml('' + (item.category || ''));
+                    let safeName = sanitizeHtml('' + (item.name || ''));
+                    let safeSku = sanitizeHtml('' + (item.sku || ''));
+                    let item_info = `<div class="col-lg-2 box ${catClass}"
                                 onclick="$(this).addToCart(${item._id}, ${item.quantity}, ${item.stock})">
                             <div class="widget-panel widget-style-2 ${isLowStock ? 'alert-danger' : ''}" style="${isLowStock ? 'border: 1px solid #d9534f;' : ''}">                    
                             <div id="image"><img src="${item.img == "" ? "./assets/images/default.jpg" : img_path + item.img}" id="product_img" alt=""></div>                    
                                         <div class="text-muted m-t-5 text-center">
-                                        <div class="name" id="product_name">${item.name}</div> 
-                                        <span class="sku">${item.sku}</span>
+                                        <div class="name" id="product_name">${safeName}</div> 
+                                        <span class="sku">${safeSku}</span>
                                         <span class="stock">STOCK </span><span class="count" style="${stockStyle}">${item.stock == 1 ? item.quantity : 'N/A'}</span></div>
                                         <sp class="text-success text-center"><b data-plugin="counterup">${settings.symbol + item.price}</b> </sp>
                             </div>
@@ -268,7 +306,8 @@ if (auth == undefined) {
                     let c = allCategories.filter(function (ctg) {
                         return ctg._id == category;
                     })
-                    $('#categories').append(`<button type="button" id="${category}" class="btn btn-categories btn-white waves-effect waves-light">${c.length > 0 ? c[0].name : ''}</button> `);
+                    let catName = c.length > 0 ? sanitizeHtml('' + c[0].name) : '';
+                    $('#categories').append(`<button type="button" id="${category}" class="btn btn-categories btn-white waves-effect waves-light">${catName}</button> `);
                 });
             });
         }
@@ -293,7 +332,8 @@ if (auth == undefined) {
 
                 customers.forEach(cust => {
 
-                    let customer = `<option value='{"id": ${cust._id}, "name": "${cust.name}"}'>${cust.name}</option>`;
+                    let safeCustName = sanitizeHtml('' + cust.name);
+                    let customer = `<option value='{"id": ${cust._id}, "name": "${safeCustName}"}'>${safeCustName}</option>`;
                     $('#customer').append(customer);
                 });
 
@@ -665,7 +705,7 @@ if (auth == undefined) {
 
             cart.forEach(item => {
 
-                items += "<tr><td>" + item.product_name + "</td><td>" + item.quantity + "</td><td>" + settings.symbol + parseFloat(item.price).toFixed(2) + "</td></tr>";
+                items += "<tr><td>" + sanitizeHtml('' + item.product_name) + "</td><td>" + item.quantity + "</td><td>" + settings.symbol + parseFloat(item.price).toFixed(2) + "</td></tr>";
 
             });
 
@@ -761,7 +801,7 @@ if (auth == undefined) {
                 cart.forEach(item => {
                     let uomLabel = item.uom ? ` (${item.uom})` : '';
                     a4_items += `<tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;">${item.product_name}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${sanitizeHtml('' + item.product_name)}</td>
                         <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${item.quantity}${uomLabel}</td>
                         <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${settings.symbol}${parseFloat(item.price).toFixed(2)}</td>
                         <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${settings.symbol}${parseFloat(item.price * item.quantity).toFixed(2)}</td>
@@ -798,7 +838,7 @@ if (auth == undefined) {
                         <tr>
                             <td width="50%">
                                 <h5 style="font-size: 12px; margin: 0 0 5px 0; color: #777; text-transform: uppercase;">Bill To:</h5>
-                                <b>Name:</b> ${customer == 0 ? 'Walk-in Customer' : customer.name}<br>
+                                <b>Name:</b> ${customer == 0 ? 'Walk-in Customer' : sanitizeHtml('' + customer.name)}<br>
                                 ${refNumber != "" ? '<b>Reference:</b> ' + refNumber + '<br>' : ''}
                             </td>
                         </tr>
@@ -887,7 +927,7 @@ if (auth == undefined) {
             <p>
             Order No : ${orderNumber} <br>
             Ref No : ${refNumber == "" ? orderNumber : refNumber} <br>
-            Customer : ${customer == 0 ? 'Walk in customer' : customer.name} <br>
+            Customer : ${customer == 0 ? 'Walk in customer' : sanitizeHtml('' + customer.name)} <br>
             Cashier : ${user.fullname} <br>
             Date : ${date}<br>
             </p>
@@ -1671,10 +1711,10 @@ if (auth == undefined) {
                 product_list += `<tr>
             <td><img id="`+ product._id + `"></td>
             <td><img style="max-height: 50px; max-width: 50px; border: 1px solid #ddd;" src="${product.img == "" ? "./assets/images/default.jpg" : img_path + product.img}" id="product_img"></td>
-            <td>${product.name}</td>
+            <td>${sanitizeHtml('' + product.name)}</td>
             <td>${settings.symbol}${product.price}</td>
             <td>${stockDisplay}</td>
-            <td>${category.length > 0 ? category[0].name : ''}</td>
+            <td>${category.length > 0 ? sanitizeHtml('' + category[0].name) : ''}</td>
             <td class="nobr"><span class="btn-group"><button onClick="$(this).editProduct(${index})" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button><button onClick="$(this).deleteProduct(${product._id})" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></span></td></tr>`;
 
                 if (counter == allProducts.length) {
@@ -1716,7 +1756,7 @@ if (auth == undefined) {
 
                 category_list += `<tr>
      
-            <td>${category.name}</td>
+            <td>${sanitizeHtml('' + category.name)}</td>
             <td><span class="btn-group"><button onClick="$(this).editCategory(${index})" class="btn btn-warning"><i class="fa fa-edit"></i></button><button onClick="$(this).deleteCategory(${category._id})" class="btn btn-danger"><i class="fa fa-trash"></i></button></span></td></tr>`;
             });
 
@@ -2247,7 +2287,7 @@ function loadSoldProducts() {
         counter++;
 
         sold_list += `<tr>
-            <td>${item.product}</td>
+            <td>${sanitizeHtml('' + item.product)}</td>
             <td>${item.qty}</td>
             <td>${product[0].stock == 1 ? product.length > 0 ? product[0].quantity : '' : 'N/A'}</td>
             <td>${settings.symbol + (item.qty * parseFloat(item.price)).toFixed(2)}</td>
@@ -2303,7 +2343,7 @@ $.fn.viewTransaction = function (index) {
     let products = allTransactions[index].items;
 
     products.forEach(item => {
-        items += "<tr><td>" + item.product_name + "</td><td>" + item.quantity + "</td><td>" + settings.symbol + parseFloat(item.price).toFixed(2) + "</td></tr>";
+        items += "<tr><td>" + sanitizeHtml('' + item.product_name) + "</td><td>" + item.quantity + "</td><td>" + settings.symbol + parseFloat(item.price).toFixed(2) + "</td></tr>";
 
     });
 
@@ -2362,7 +2402,7 @@ $.fn.viewTransaction = function (index) {
         <p>
         Invoice : ${orderNumber} <br>
         Ref No : ${refNumber} <br>
-        Customer : ${allTransactions[index].customer == 0 ? 'Walk in Customer' : allTransactions[index].customer.name} <br>
+        Customer : ${allTransactions[index].customer == 0 ? 'Walk in Customer' : sanitizeHtml('' + allTransactions[index].customer.name)} <br>
         Cashier : ${allTransactions[index].user} <br>
         Date : ${moment(allTransactions[index].date).format('DD MMM YYYY HH:mm:ss')}<br>
         </p>
@@ -2482,9 +2522,10 @@ $('body').on("submit", "#account", function (e) {
             cache: false,
             processData: false,
             success: function (data) {
-                if (data._id) {
+                if (data.token && data.user) {
                     storage.set('auth', { auth: true });
-                    storage.set('user', data);
+                    storage.set('user', data.user);
+                    storage.set('token', data.token);
                     if (isElectron) {
                         ipcRenderer.send('app-reload', '');
                     } else {

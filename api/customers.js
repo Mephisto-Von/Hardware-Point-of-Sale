@@ -5,6 +5,7 @@ const Datastore = require("@seald-io/nedb");
 const async = require( "async" );
 const path = require("path");
 const fs = require("fs");
+const { verifyToken } = require("./auth");
 
 const DATA_DIR = process.env.APPDATA
   ? path.join(process.env.APPDATA, "HardwarePOS")
@@ -16,6 +17,7 @@ if (!fs.existsSync(dbDir)) {
 }
 
 app.use( bodyParser.json() );
+app.use(verifyToken);
 
 module.exports = app;
 
