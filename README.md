@@ -42,8 +42,8 @@ Built with **Electron** and **Node.js** — works as a standalone desktop app or
 
 | File | Description | Link |
 |------|-------------|------|
-| **Setup.exe** | Full installer — creates shortcuts, adds to Start Menu | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.Setup.0.1.0.exe) |
-| **Portable.exe** | No installation needed — run from USB or any folder | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.0.1.0.exe) |
+| **Setup.exe** | Full installer — creates shortcuts, adds to Start Menu | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.Setup.0.2.0.exe) |
+| **Portable.exe** | No installation needed — run from USB or any folder | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.0.2.0.exe) |
 
 **To install:**  
 1. Download **Setup.exe**  
@@ -284,7 +284,7 @@ Hardware-Point-of-Sale/
 |-------|-----------|
 | **Desktop Shell** | Electron 22 |
 | **Backend** | Node.js + Express |
-| **Database** | nedb (embedded, zero-config) |
+| **Database** | @seald-io/nedb (embedded, zero-config) |
 | **Frontend** | jQuery, Bootstrap 3 |
 | **Printing** | print-js, jsPDF |
 | **Barcodes** | JsBarcode |

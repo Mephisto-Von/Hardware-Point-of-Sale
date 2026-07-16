@@ -16,8 +16,15 @@
       "**/*",
       "!data",
       "!release",
+      "!release-builds",
       "!screenshots",
-      "!.git"
+      "!.git",
+      "!.gitignore",
+      "!node_modules/**/*.md",
+      "!node_modules/**/*.ts",
+      "!node_modules/**/test",
+      "!node_modules/**/tests",
+      "!node_modules/**/docs"
     ],
     "extraResources": [
       {

@@ -5,11 +5,11 @@ const rootPath = path.join('./');
 
 resultPromise = electronInstaller.createWindowsInstaller({
     appDirectory: './release-builds/HardwarePOS-win32-x64',
-    outputDirectory: './installers',
+    outputDirectory: './release',
     authors: 'Hosting Domain',
     noMsi: true,
-    exe: 'pos.exe',
-    setupExe: 'HardwarePOSInstaller.exe',
+    exe: 'HardwarePOS.exe',
+    setupExe: 'HardwarePOS Setup 0.2.0.exe',
     setupIcon: path.join(rootPath, 'assets', 'images', 'icon.ico')
   });
 
