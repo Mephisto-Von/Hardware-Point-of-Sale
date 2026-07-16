@@ -40,7 +40,7 @@ if (isElectron) {
     Store = require('electron-store');
     remote = electron.remote || (electron.webFrame ? null : require('@electron/remote'));
     app = remote ? remote.app : null;
-    img_path = app ? app.getPath('appData') + '/HardwarePOS/uploads/' : '';
+    img_path = app ? app.getPath('appData') + '/MetroPOS/uploads/' : '';
     btoa = require('btoa');
     jsPDF = require('jspdf');
     html2canvas = require('html2canvas');

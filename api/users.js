@@ -8,7 +8,7 @@ const fs = require("fs");
 const { generateToken, verifyToken } = require("./auth");
 
 const DATA_DIR = process.env.APPDATA
-  ? path.join(process.env.APPDATA, "HardwarePOS")
+  ? path.join(process.env.APPDATA, "MetroPOS")
   : path.join(__dirname, "..", "data");
 
 const dbDir = path.join(DATA_DIR, "server", "databases");

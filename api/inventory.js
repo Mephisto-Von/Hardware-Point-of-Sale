@@ -10,7 +10,7 @@ const path = require("path");
 const { verifyToken } = require("./auth");
 
 const DATA_DIR = process.env.APPDATA
-  ? path.join(process.env.APPDATA, "HardwarePOS")
+  ? path.join(process.env.APPDATA, "MetroPOS")
   : path.join(__dirname, "..", "data");
 
 const uploadsDir = path.join(DATA_DIR, "uploads");

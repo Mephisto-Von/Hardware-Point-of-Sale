@@ -17,7 +17,7 @@ app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));
 const uploadsDir = process.env.APPDATA
-  ? path.join(process.env.APPDATA, "HardwarePOS", "uploads")
+  ? path.join(process.env.APPDATA, "MetroPOS", "uploads")
   : path.join(__dirname, "data", "uploads");
 if (!require("fs").existsSync(uploadsDir)) {
   require("fs").mkdirSync(uploadsDir, { recursive: true });

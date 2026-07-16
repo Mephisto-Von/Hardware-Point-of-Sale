@@ -1,13 +1,13 @@
 {
-  "name": "hardware-pos",
-  "version": "0.2.0",
-  "description": "Hardware Point of Sale is a desktop application developed by Hosting Domain.",
-  "author": "Hosting Domain",
+  "name": "metro-pos",
+  "version": "0.3.0",
+  "description": "MetroPOS - Point of Sale System for hardware and retail stores.",
+  "author": "MetroPOS",
   "private": true,
   "main": "start.js",
   "build": {
-    "appId": "hardware-pos",
-    "productName": "HardwarePOS",
+    "appId": "metro-pos",
+    "productName": "MetroPOS",
     "directories": {
       "output": "release",
       "buildResources": "assets"
@@ -82,7 +82,7 @@
   "scripts": {
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
     "electron-build": "electron-builder",
-    "package-win": "electron-packager . HardwarePOS --overwrite --asar=false --platform=win32 --arch=x64 --icon=assets/images/icon.ico --prune=true --out=release-builds --version-string.ProductName=\"HardwarePOS\""
+    "package-win": "electron-packager . MetroPOS --overwrite --asar=false --platform=win32 --arch=x64 --icon=assets/images/icon.ico --prune=true --out=release-builds --version-string.ProductName=\"MetroPOS\""
   },
   "browserslist": {
     "production": [

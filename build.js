@@ -4,12 +4,12 @@ const path = require('path');
 const rootPath = path.join('./');
 
 resultPromise = electronInstaller.createWindowsInstaller({
-    appDirectory: './release-builds/HardwarePOS-win32-x64',
+    appDirectory: './release-builds/MetroPOS-win32-x64',
     outputDirectory: './release',
-    authors: 'Hosting Domain',
+    authors: 'MetroPOS',
     noMsi: true,
-    exe: 'HardwarePOS.exe',
-    setupExe: 'HardwarePOS Setup 0.2.0.exe',
+    exe: 'MetroPOS.exe',
+    setupExe: 'MetroPOS Setup 0.3.0.exe',
     setupIcon: path.join(rootPath, 'assets', 'images', 'icon.ico')
   });
 

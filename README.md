@@ -1,4 +1,8 @@
-# Hardware Point of Sale
+# MetroPOS
+
+<p align="center">
+  <img src="assets/images/logo.svg" alt="MetroPOS Logo" width="400">
+</p>
 
 [![Release](https://img.shields.io/github/v/release/Mephisto-Von/Hardware-Point-of-Sale)](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/Mephisto-Von/Hardware-Point-of-Sale/total)](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest)
@@ -42,13 +46,13 @@ Built with **Electron** and **Node.js** — works as a standalone desktop app or
 
 | File | Description | Link |
 |------|-------------|------|
-| **Setup.exe** | Full installer — creates shortcuts, adds to Start Menu | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.Setup.0.2.0.exe) |
-| **Portable.exe** | No installation needed — run from USB or any folder | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/HardwarePOS.0.2.0.exe) |
+| **Setup.exe** | Full installer — creates shortcuts, adds to Start Menu | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/MetroPOS.Setup.0.3.0.exe) |
+| **Portable.exe** | No installation needed — run from USB or any folder | [Download](https://github.com/Mephisto-Von/Hardware-Point-of-Sale/releases/latest/download/MetroPOS.0.3.0.exe) |
 
 **To install:**  
 1. Download **Setup.exe**  
 2. Run the installer and follow the prompts  
-3. Launch **HardwarePOS** from the Start Menu or desktop shortcut  
+3. Launch **MetroPOS** from the Start Menu or desktop shortcut  
 
 ### 🌐 Web App (Any OS — no install)
 
@@ -58,7 +62,7 @@ Run in any browser on Windows, macOS, or Linux:
 # 1. Install Node.js (https://nodejs.org)
 # 2. Download or clone this repository
 git clone https://github.com/Mephisto-Von/Hardware-Point-of-Sale.git
-cd Hardware-Point-of-Sale
+cd MetroPOS
 
 # 3. Install dependencies
 npm install
@@ -240,7 +244,7 @@ npm run electron
 ## Project Structure
 
 ```
-Hardware-Point-of-Sale/
+MetroPOS/
 ├── server.js              Express API server (port 8001)
 ├── start.js               Electron main process
 ├── index.html             Frontend UI layout
@@ -290,6 +294,8 @@ Hardware-Point-of-Sale/
 | **Barcodes** | JsBarcode |
 | **Charts** | DataTables |
 | **Packaging** | electron-builder, NSIS |
+| **Auth** | JWT + bcrypt |
+| **Security** | DOMPurify (XSS prevention) |
 
 ---
 
