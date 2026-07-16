@@ -1,7 +1,7 @@
 const app = require( "express")();
 const server = require( "http" ).Server( app );
 const bodyParser = require( "body-parser" );
-const Datastore = require( "nedb" );
+const Datastore = require("@seald-io/nedb");
 const btoa = require('btoa');
 const path = require("path");
 const fs = require("fs");
@@ -166,7 +166,7 @@ app.get( "/check", function ( req, res ) {
         _id: 1
 }, function ( err, docs ) {
         if(!docs) {
-            let User = { 
+            let User = {
                 "_id": 1,
                 "username": "admin",
                 "password": btoa("admin"),
@@ -178,8 +178,11 @@ app.get( "/check", function ( req, res ) {
                 "perm_settings": 1,
                 "status": ""
               }
-            usersDB.insert( User, function ( err, user ) {                            
+            usersDB.insert( User, function ( err, user ) {
+                res.send({ status: "created" });
             });
+        } else {
+            res.send({ status: "exists" });
         }
     } );
 } );
